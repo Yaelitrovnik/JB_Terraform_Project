@@ -1,10 +1,16 @@
-variable "private_key_path" {
+variable "aws_region" {
   type        = string
-  description = "Absolute path to save SSH private key"
+  default     = "us-east-2"
+  description = "AWS region to deploy resources"
 }
 
-variable "create_igw" {
-  type        = bool
-  default     = false
-  description = "Create Internet Gateway + route table if true"
+variable "private_key_path" {
+  type        = string
+  description = "Absolute path to save SSH private key (example: C:/Users/user/.ssh/builder_key.pem)"
+}
+
+variable "key_name" {
+  type        = string
+  default     = "builder-key"
+  description = "Name for the AWS EC2 Key Pair"
 }
