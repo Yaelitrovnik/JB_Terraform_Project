@@ -91,13 +91,12 @@ data "aws_ami" "ubuntu" {
 # EC2 Instance with Flask app
 # ----------------------------
 resource "aws_instance" "builder_instance" {
-  ami           = var.ami_id
+    ami           = var.ami_id != "" ? var.ami_id : data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-  key_name = aws_key_pair.builder_key.key_name
-  subnet_id = data.aws_subnet.jbp_public.id
+  key_name      = aws_key_pair.builder_key.key_name
+  subnet_id     = data.aws_subnet.jbp_public.id
   security_groups = [aws_security_group.builder_sg.id]
-  user_data = file("${path.module}/user_data.sh")  # for Flask setup
-
+  user_data     = file("${path.module}/user_data.sh")
   tags = {
     Name = "builder-yael"
   }

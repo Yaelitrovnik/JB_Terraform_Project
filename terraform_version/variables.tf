@@ -1,16 +1,25 @@
-variable "aws_region" {
+# variables.tf
+
+variable "key_name" {
+  description = "Name of the SSH key pair for EC2 instance"
   type        = string
-  default     = "us-east-2"
-  description = "AWS region to deploy resources"
+  default     = "builder-key"
 }
 
 variable "private_key_path" {
-  type        = string
   description = "Absolute path to save SSH private key (example: C:/Users/user/.ssh/builder_key.pem)"
+  type        = string
 }
 
-variable "key_name" {
+variable "instance_type" {
+  description = "EC2 instance type"
   type        = string
-  default     = "builder-key"
-  description = "Name for the AWS EC2 Key Pair"
+  default     = "t3.medium"
 }
+
+variable "ami_id" {
+  description = "AMI ID for Ubuntu 22.04"
+  type        = string
+  default     = ""  # optional, if you want to override
+}
+
