@@ -50,5 +50,5 @@ http://<EC2_PUBLIC_IP>:5001
 6. SSH into the instance:
 
 ```bash
-ssh -i "C:/Users/user/.ssh/builder_key.pem" ubuntu@<instance_public_ip>
+ssh -i "C:\Users\user\.ssh/builder_key.pem" ubuntu@<instance_public_ip>
 ```

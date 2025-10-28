@@ -25,7 +25,7 @@ data "http" "my_ip" {
 }
 
 # ----------------------------
-# Default VPC & Subnet
+# Existing VPC & Subnet
 # ----------------------------
 data "aws_vpc" "jbp" {
   filter {
@@ -44,47 +44,12 @@ data "aws_subnet" "jbp_public" {
 }
 
 # ----------------------------
-# Internet Gateway
-# ----------------------------
-resource "aws_internet_gateway" "jbp_igw" {
-  vpc_id = data.aws_vpc.jbp.id
-
-  tags = {
-    Name = "JBP-igw"
-  }
-}
-
-# ----------------------------
-# Public Route Table
-# ----------------------------
-resource "aws_route_table" "jbp_public_rt" {
-  vpc_id = data.aws_vpc.jbp.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.jbp_igw.id
-  }
-
-  tags = {
-    Name = "JBP-public-rt"
-  }
-}
-
-# ----------------------------
-# Route Table Association
-# ----------------------------
-resource "aws_route_table_association" "jbp_public_assoc" {
-  subnet_id      = data.aws_subnet.jbp_public.id
-  route_table_id = aws_route_table.jbp_public_rt.id
-}
-
-# ----------------------------
 # Security Group
 # ----------------------------
 resource "aws_security_group" "builder_sg" {
   name        = "builder-sg"
   description = "Security group for builder-yael EC2"
-  vpc_id = data.aws_vpc.jbp.id
+  vpc_id      = data.aws_vpc.jbp.id
 
   ingress {
     description = "SSH access"
@@ -116,6 +81,7 @@ resource "aws_security_group" "builder_sg" {
 data "aws_ami" "ubuntu" {
   most_recent = true
   owners      = ["099720109477"]
+
   filter {
     name   = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
@@ -126,12 +92,14 @@ data "aws_ami" "ubuntu" {
 # EC2 Instance with Flask app
 # ----------------------------
 resource "aws_instance" "builder_instance" {
-    ami           = var.ami_id != "" ? var.ami_id : data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
-  key_name      = aws_key_pair.builder_key.key_name
-  subnet_id     = data.aws_subnet.jbp_public.id
-  security_groups = [aws_security_group.builder_sg.id]
-  user_data     = file("${path.module}/user_data.sh")
+  ami             = var.ami_id != "" ? var.ami_id : data.aws_ami.ubuntu.id
+  instance_type   = var.instance_type
+  key_name        = aws_key_pair.builder_key.key_name
+  subnet_id       = data.aws_subnet.jbp_public.id
+  vpc_security_group_ids = [aws_security_group.builder_sg.id]
+  associate_public_ip_address = true  # ensure it gets a public IP
+  user_data       = file("${path.module}/user_data.sh")
+
   tags = {
     Name = "builder-yael"
   }
