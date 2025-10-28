@@ -18,3 +18,4 @@ if __name__ == "__main__":
 FLASKAPP
 
 pip3 install flask boto3
+pip3 install requests flask boto3
