@@ -30,14 +30,14 @@ data "http" "my_ip" {
 data "aws_vpc" "jbp" {
   filter {
     name   = "tag:Name"
-    values = ["JBP-vpc"]
+    values = [var.vpc_name]
   }
 }
 
 data "aws_subnet" "jbp_public" {
   filter {
     name   = "tag:Name"
-    values = ["JBP-public-subnet"]
+    values = [var.public_subnet_name]
   }
 
   vpc_id = data.aws_vpc.jbp.id
@@ -47,7 +47,7 @@ data "aws_subnet" "jbp_public" {
 # Security Group
 # ----------------------------
 resource "aws_security_group" "builder_sg" {
-  name        = "builder-yael-sg"
+  name        = "builder-sg"
   description = "Security group for builder-yael EC2"
   vpc_id = data.aws_vpc.jbp.id
 

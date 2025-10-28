@@ -17,6 +17,18 @@ variable "instance_type" {
   default     = "t3.medium"
 }
 
+variable "vpc_name" {
+  description = "Name tag of the target VPC"
+  type        = string
+  default     = "JBP-vpc"
+}
+
+variable "public_subnet_name" {
+  description = "Name tag of the public subnet within the VPC"
+  type        = string
+  default     = "JBP-public-subnet"
+}
+
 variable "ami_id" {
   description = "AMI ID for Ubuntu 22.04"
   type        = string
