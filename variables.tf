@@ -26,7 +26,7 @@ variable "vpc_name" {
 variable "public_subnet_name" {
   description = "Name tag of the public subnet within the VPC"
   type        = string
-  default     = "JBP-public-subnet"
+  default     = "JBP-subnet"
 }
 
 variable "aws_region" {

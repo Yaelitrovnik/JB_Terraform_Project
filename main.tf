@@ -44,6 +44,41 @@ data "aws_subnet" "jbp_public" {
 }
 
 # ----------------------------
+# Internet Gateway
+# ----------------------------
+resource "aws_internet_gateway" "jbp_igw" {
+  vpc_id = data.aws_vpc.jbp.id
+
+  tags = {
+    Name = "JBP-igw"
+  }
+}
+
+# ----------------------------
+# Public Route Table
+# ----------------------------
+resource "aws_route_table" "jbp_public_rt" {
+  vpc_id = data.aws_vpc.jbp.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.jbp_igw.id
+  }
+
+  tags = {
+    Name = "JBP-public-rt"
+  }
+}
+
+# ----------------------------
+# Route Table Association
+# ----------------------------
+resource "aws_route_table_association" "jbp_public_assoc" {
+  subnet_id      = data.aws_subnet.jbp_public.id
+  route_table_id = aws_route_table.jbp_public_rt.id
+}
+
+# ----------------------------
 # Security Group
 # ----------------------------
 resource "aws_security_group" "builder_sg" {
