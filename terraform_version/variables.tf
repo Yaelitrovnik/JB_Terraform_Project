@@ -3,7 +3,7 @@
 variable "key_name" {
   description = "Name of the SSH key pair for EC2 instance"
   type        = string
-  default     = "builder-key"
+  default     = "builder_key"
 }
 
 variable "private_key_path" {
@@ -14,7 +14,7 @@ variable "private_key_path" {
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t3.medium"
+  default     = "t3.micro"
 }
 
 variable "vpc_name" {
@@ -27,6 +27,12 @@ variable "public_subnet_name" {
   description = "Name tag of the public subnet within the VPC"
   type        = string
   default     = "JBP-public-subnet"
+}
+
+variable "aws_region" {
+  description = "AWS region to deploy resources"
+  type        = string
+  default     = "us-east-2"
 }
 
 variable "ami_id" {
