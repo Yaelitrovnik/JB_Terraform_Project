@@ -92,20 +92,17 @@ data "aws_ami" "ubuntu" {
 # EC2 Instance with Flask app
 # ----------------------------
 resource "aws_instance" "builder_instance" {
-  ami                        = var.ami_id != "" ? var.ami_id : data.aws_ami.ubuntu.id
-  instance_type              = var.instance_type
-  key_name                   = aws_key_pair.builder_key.key_name
-  subnet_id                  = data.aws_subnet.jbp_public.id
-  vpc_security_group_ids     = [aws_security_group.builder_sg.id]
-  associate_public_ip_address = true  # ensure public IP
-
-  user_data = templatefile("${path.module}/user_data.sh", {
-    ssh_key_path      = var.private_key_path
-    security_group_id = aws_security_group.builder_sg.id
-  })
+  ami                         = var.ami_id != "" ? var.ami_id : data.aws_ami.ubuntu.id
+  instance_type               = var.instance_type
+  key_name                    = aws_key_pair.builder_key.key_name
+  subnet_id                   = data.aws_subnet.jbp_public.id
+  vpc_security_group_ids      = [aws_security_group.builder_sg.id]
+  associate_public_ip_address = true
+  user_data                   = file("${path.module}/user_data.sh")
 
   tags = {
     Name = "builder-yael"
   }
 }
+
 
