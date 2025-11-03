@@ -38,7 +38,7 @@ terraform apply
 4. Enter your private_key_path when prompted, e.g.:
 
 ```swift
-C:/Users/user/.ssh/builder_key.pem
+C:\Users\user\.ssh\builder_key.pem
 ```
 
 5. Access Flask app:
@@ -50,5 +50,5 @@ http://<EC2_PUBLIC_IP>:5001
 6. SSH into the instance:
 
 ```bash
-ssh -i "C:\Users\user\.ssh/builder_key.pem" ubuntu@<instance_public_ip>
+ssh -i "<key_path>" ubuntu@<instance_public_ip>
 ```

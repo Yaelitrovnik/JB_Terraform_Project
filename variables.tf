@@ -40,4 +40,3 @@ variable "ami_id" {
   type        = string
   default     = ""  # optional, if you want to override
 }
-
