@@ -15,16 +15,16 @@ chown ubuntu:ubuntu /home/ubuntu/webapp
 # ----------------------------
 # Pass Terraform variables as environment variables
 # ----------------------------
-echo "export SSH_KEY_PATH=${ssh_key_path}" >> /etc/environment
-echo "export SECURITY_GROUP_ID=${security_group_id}" >> /etc/environment
-echo "export INSTANCE_TYPE=${instance_type}" >> /etc/environment
-echo "export REGION=${region}" >> /etc/environment
-echo "export VPC_ID=${vpc_id}" >> /etc/environment
+echo "SSH_KEY_PATH=${ssh_key_path}" >> /etc/environment
+echo "SECURITY_GROUP_ID=${security_group_id}" >> /etc/environment
+echo "INSTANCE_TYPE=${instance_type}" >> /etc/environment
+echo "REGION=${region}" >> /etc/environment
+echo "VPC_ID=${vpc_id}" >> /etc/environment
 
 # ----------------------------
 # Create app.py
 # ----------------------------
-cat > /home/ubuntu/webapp/app.py << EOF
+cat > /home/ubuntu/webapp/app.py << 'EOF'
 import os
 import requests
 from flask import Flask
@@ -45,13 +45,13 @@ def home():
 
     return f"""
     ✅ AWS EC2 Flask App is Running!<br>
-    Public IP: {public_ip}<br>
-    SSH Key Location: {ssh_key_path}<br>
-    Security Group ID: {security_group_id}<br>
-    Instance Type: {instance_type}<br>
-    Region: {region}<br>
-    VPC ID: {vpc_id}<br>
-    Flask is running on port 5001
+    <br>Public IP: {public_ip}<br>
+    <br>SSH Key Location: {ssh_key_path}<br>
+    <br>Security Group ID: {security_group_id}<br>
+    <br>Instance Type: {instance_type}<br>
+    <br>Region: {region}<br>
+    <br>VPC ID: {vpc_id}<br>
+    <br>Flask is running on port 5001
     """
 
 if __name__ == "__main__":
@@ -61,7 +61,7 @@ EOF
 # ----------------------------
 # Create systemd service for Flask
 # ----------------------------
-cat > /etc/systemd/system/flaskapp.service << EOF
+cat > /etc/systemd/system/flaskapp.service << 'EOF'
 [Unit]
 Description=Flask Web App
 After=network.target

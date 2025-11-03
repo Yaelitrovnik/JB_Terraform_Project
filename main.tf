@@ -98,7 +98,13 @@ resource "aws_instance" "builder_instance" {
   subnet_id                   = data.aws_subnet.jbp_public.id
   vpc_security_group_ids      = [aws_security_group.builder_sg.id]
   associate_public_ip_address = true
-  user_data = file("${path.module}/user_data.sh")
+   user_data = templatefile("${path.module}/user_data.sh", {
+    ssh_key_path          = var.private_key_path
+    security_group_id     = aws_security_group.builder_sg.id
+    instance_type         = var.instance_type
+    region                = var.aws_region
+    vpc_id                = data.aws_vpc.jbp.id
+  })
 
   tags = {
     Name = "builder-yael"
